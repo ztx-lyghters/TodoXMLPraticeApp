@@ -7,18 +7,15 @@ import ztx.lyghters.todoxmlpraticeapp.databinding.ItemTodoBinding
 
 class TodoAdapter(
     var todos: List<Todo>,
+    val onItemLongClick: (position: Int) -> Unit,
 ): RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
-    private var _binding: ItemTodoBinding? = null
-    private val binding
-        get() = _binding
-            ?: throw IllegalStateException("Binding for ItemTodoBinding must not be null")
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): TodoViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        _binding = ItemTodoBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemTodoBinding.inflate(layoutInflater, parent, false)
 
         return TodoViewHolder(binding)
     }
@@ -31,6 +28,20 @@ class TodoAdapter(
             todos[position].apply {
                 tvTodoTitle.text = title
                 cbTodoDone.isChecked = isChecked
+                layoutTodoItem.setOnLongClickListener {
+                    androidx.appcompat.app.AlertDialog.Builder(root.context)
+                        .setTitle("Delete element?")
+                        .setMessage("Are you sure you want to delete ${tvTodoTitle.text.toString()}?")
+                        .setPositiveButton("Delete") { dialog, _ ->
+                            onItemLongClick(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, todos.size)
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                    true
+                }
             }
         }
     }

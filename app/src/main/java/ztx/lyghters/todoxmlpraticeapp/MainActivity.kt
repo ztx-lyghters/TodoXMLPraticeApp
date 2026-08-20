@@ -33,7 +33,11 @@ class MainActivity : AppCompatActivity() {
             Todo("Don't do what's already done", true),
         )
 
-        val adapter = TodoAdapter(todoList)
+        val adapter = TodoAdapter(
+            todoList
+        ) { position ->
+            todoList.removeAt(position)
+        }
 
         with(binding) {
             rvTodoList.adapter = adapter
@@ -47,7 +51,11 @@ class MainActivity : AppCompatActivity() {
                             false,
                         )
                     )
-                    adapter.notifyItemInserted(todoList.size - 1)
+                    if(todoList.isNotEmpty()) {
+                        adapter.notifyItemInserted(todoList.size - 1)
+                    } else {
+                        adapter.notifyItemInserted(0)
+                    }
                 }
             }
         }
