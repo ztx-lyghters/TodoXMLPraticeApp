@@ -1,9 +1,11 @@
-package ztx.lyghters.todoxmlpraticeapp
+package ztx.lyghters.todoxmlpraticeapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ztx.lyghters.todoxmlpraticeapp.domain.models.Todo
 import ztx.lyghters.todoxmlpraticeapp.databinding.ItemTodoBinding
+import ztx.lyghters.todoxmlpraticeapp.ui.dialogs.showDeleteTodoDialog
 
 class TodoAdapter(
     var todos: List<Todo>,
@@ -26,20 +28,14 @@ class TodoAdapter(
     ) {
         holder.binding.apply {
             todos[position].apply {
-                tvTodoTitle.text = title
-                cbTodoDone.isChecked = isChecked
-                layoutTodoItem.setOnLongClickListener {
-                    androidx.appcompat.app.AlertDialog.Builder(root.context)
-                        .setTitle("Delete element?")
-                        .setMessage("Are you sure you want to delete ${tvTodoTitle.text.toString()}?")
-                        .setPositiveButton("Delete") { dialog, _ ->
-                            onItemLongClick(position)
-                            notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, todos.size)
-                            dialog.dismiss()
-                        }
-                        .setNegativeButton("Cancel", null)
-                        .show()
+                ItemTodoBinding.tvTodoTitle.text = title
+                ItemTodoBinding.cbTodoDone.isChecked = isChecked
+                ItemTodoBinding.layoutTodoItem.setOnLongClickListener {
+                    showDeleteTodoDialog(ItemTodoBinding.getRoot.context, this) {
+                        onItemLongClick(position)
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position, todos.size)
+                    }
                     true
                 }
             }
