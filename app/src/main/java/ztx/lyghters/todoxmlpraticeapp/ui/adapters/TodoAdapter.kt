@@ -28,10 +28,10 @@ class TodoAdapter(
     ) {
         holder.binding.apply {
             todos[position].apply {
-                ItemTodoBinding.tvTodoTitle.text = title
-                ItemTodoBinding.cbTodoDone.isChecked = isChecked
-                ItemTodoBinding.layoutTodoItem.setOnLongClickListener {
-                    showDeleteTodoDialog(ItemTodoBinding.getRoot.context, this) {
+                tvTodoTitle.text = title
+                cbTodoDone.isChecked = isChecked
+                layoutTodoItem.setOnLongClickListener {
+                    showDeleteTodoDialog(root.context, this) {
                         onItemLongClick(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, todos.size)
