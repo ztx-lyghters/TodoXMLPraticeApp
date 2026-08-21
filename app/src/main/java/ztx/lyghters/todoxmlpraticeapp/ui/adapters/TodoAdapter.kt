@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ztx.lyghters.todoxmlpraticeapp.domain.models.Todo
 import ztx.lyghters.todoxmlpraticeapp.databinding.ItemTodoBinding
-import ztx.lyghters.todoxmlpraticeapp.ui.dialogs.showDeleteTodoDialog
+import ztx.lyghters.todoxmlpraticeapp.ui.dialogs.showDeleteDialog
 
 class TodoAdapter(
     var todos: List<Todo>,
@@ -31,7 +31,7 @@ class TodoAdapter(
                 tvTodoTitle.text = title
                 cbTodoDone.isChecked = isChecked
                 layoutTodoItem.setOnLongClickListener {
-                    showDeleteTodoDialog(root.context, this) {
+                    showDeleteDialog(root.context, this) {
                         onItemLongClick(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, todos.size)
